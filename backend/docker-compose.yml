@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: onlinestore
+    volumes:
+      - mongo-data:/data/db
+
+  cart-service:
+    build: .
+    container_name: cart-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/onlinestore
+
+volumes:
+  mongo-data:
